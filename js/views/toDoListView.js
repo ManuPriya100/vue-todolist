@@ -2,6 +2,7 @@ import { subscribe } from '/js/models/toDoListModel'
 import { toDoItemTemplate } from '../templates/toDoItemTemplate'
 import { deleteTodoController } from '../controllers/deleteTodoController'
 import { updateTodoController } from '../controllers/udpateTodoController'
+import { addTodoController } from '../controllers/todoCreateController'
 
 let view = null
 
@@ -17,7 +18,7 @@ function render(data) {
   const todoList = document.querySelector('#item-container')
   todoList.replaceChildren()
 
-  data.forEach((item) => {
+  data.forEach(item => {
     div.prepend(toDoItemTemplate(item))
   })
 
@@ -32,6 +33,9 @@ function onHandleClick(e) {
     case 'edit':
       console.log(e.target.dataset.uid)
       updateTodoController(e.target.dataset.uid)
+      break
+    case 'add':
+      addTodoController(null)
       break
   }
 }

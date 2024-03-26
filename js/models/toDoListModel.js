@@ -1,11 +1,11 @@
-import { ref, get, remove, update } from 'firebase/database'
+import { ref, push, get, remove, update } from 'firebase/database'
 import { db } from '../lib/firebase/config/firebaseInit'
 import { createStore, removeFromStore, updateStore } from './store'
 
 let observers = []
 
-export const subscribe = (fn) => observers.push(fn)
-export const notify = (data) => observers.forEach((observer) => observer(data))
+export const subscribe = fn => observers.push(fn)
+export const notify = data => observers.forEach(observer => observer(data))
 
 export async function getToDoData() {
   const dbRef = ref(db, 'todos')
@@ -31,4 +31,12 @@ export function updateTodo(updatedTodo) {
   update(dbRef, payload)
   const store = updateStore(payload)
   notify(store)
+}
+
+export function addTodo(todo) {
+  const dbRef = ref(db, '/todos/todos/')
+  push(dbRef, todo)
+  const store = updateStore(todo)
+  notify(store)
+  alert('Todo added')
 }
